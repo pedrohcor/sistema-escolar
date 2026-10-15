@@ -47,7 +47,7 @@ public class Turma {
         aluno.add(novoAluno);
         return true;
     }
-    public void exibirTurma(){
+    public String getDadosFormatados(){
         String texto = "codigo: " + codigo + "| Disciplina. " + nomeDisciplina + "
                texto += "Alunos Matriculados (" + aluno.size() + "):\n";
                
