@@ -7,11 +7,12 @@ public class Professor {
     private String id;
     private String nome;
     private String formacao;
-
+    private ArrayList<Turma> turmas;
     public Professor(String id, String nome, String formacao) {
         this.id = id;
         this.nome = nome;
         this.formacao = formacao;
+        this.turmas = new ArrayList<>();
     }
     
     public String getId(){
@@ -36,5 +37,13 @@ public class Professor {
     
     public void setFormacao(String formacao){
         this.formacao = formacao;
+    }
+    
+    public ArrayList<Turma> getTurmas() {
+        return turmas;
+    }
+
+    public void setTurmas(ArrayList<Turma> turmas) {
+        this.turmas = turmas;
     }
 }
