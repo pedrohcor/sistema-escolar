@@ -27,9 +27,21 @@ public class Professor {
         return nome;
     }
     
-    public void setNome(String nome){
-        this.nome = nome;
-    }
+    public boolean setNome(String nome){
+    if (nome == null) {
+            System.out.println("Nome inválido!\n");
+            return false;
+        } else {
+            String n = nome.trim();
+
+            if (n.isEmpty()) {
+                System.out.println("Nome inválido!\n");
+                return false;
+            } else {
+                this.nome = n;
+                return true;
+            }
+        }    }
     
     public String getFormacao(){
         return formacao;
