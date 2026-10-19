@@ -1,4 +1,3 @@
-
 package sistemaescolar;
 
 import java.util.ArrayList;
@@ -11,7 +10,8 @@ public class SistemaEscolar {
         Scanner scanner = new Scanner(System.in);
         int opcao;
         ArrayList<Professor> professores = new ArrayList<>();
-        
+        ArrayList<Aluno> alunos = new ArrayList<>();
+
         do {
             System.out.println("================================");
             System.out.println("         SISTEMA ESCOLAR");
@@ -33,11 +33,42 @@ public class SistemaEscolar {
 
             switch (opcao) {
                 case 1:
-                    // Cadastrar aluno
+                    System.out.print("Digite o nome do aluno: ");
+                    String nomeAluno = scanner.nextLine();
+
+                    System.out.print("Digite a matrícula do aluno: ");
+                    String matricula = scanner.nextLine();
+
+                    System.out.print("Digite o CPF do aluno: ");
+                    String cpf = scanner.nextLine();
+
+                    Aluno aluno = new Aluno(nomeAluno, matricula, cpf);
+
+                    if (aluno.setNome(nomeAluno)
+                            && aluno.setMatricula(matricula)
+                            && aluno.setCpf(cpf)) {
+
+                        System.out.println("Aluno cadastrado com sucesso!");
+                        alunos.add(aluno);
+
+                    } else {
+                        System.out.println("Não foi possível cadastrar aluno.");
+                    }
                     break;
 
                 case 2:
-                    // Listar alunos
+                    if (alunos.isEmpty()) {
+                        System.out.println("Nenhum aluno cadastrado.");
+                    } else {
+                        System.out.println("\n=== ALUNOS CADASTRADOS ===");
+
+                        for (Aluno a : alunos) {
+                            System.out.println("Nome: " + a.getNome());
+                            System.out.println("Matrícula: " + a.getMatricula());
+                            System.out.println("CPF: " + a.getCpf());
+                            System.out.println("------------------------------");
+                        }
+                    }
                     break;
 
                 case 3:
