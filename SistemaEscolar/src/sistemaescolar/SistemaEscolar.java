@@ -1,6 +1,7 @@
 
 package sistemaescolar;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class SistemaEscolar {
@@ -9,7 +10,8 @@ public class SistemaEscolar {
 
         Scanner scanner = new Scanner(System.in);
         int opcao;
-
+        ArrayList<Professor> professores = new ArrayList<>();
+        
         do {
             System.out.println("================================");
             System.out.println("         SISTEMA ESCOLAR");
@@ -39,11 +41,41 @@ public class SistemaEscolar {
                     break;
 
                 case 3:
-                    // Cadastrar professor
-                    break;
+                    System.out.print("Digite o ID do professor: ");
+                    String id = scanner.nextLine();
 
+                    System.out.print("Digite o nome do professor: ");
+                    String nome = scanner.nextLine();
+
+                    System.out.print("Digite a formação do professor: ");
+                    String formacao = scanner.nextLine();
+
+                    Professor professor = new Professor(id, nome, formacao);
+
+                    if (professor.setId(id)
+                            && professor.setNome(nome)
+                            && professor.setFormacao(formacao)) {
+
+                        professores.add(professor);
+                        System.out.println("Professor cadastrado com sucesso!");
+
+                    } else {
+                        System.out.println("Não foi possível cadastrar o professor.");
+                    }
+                    break;
                 case 4:
-                    // Listar professores
+                    if (professores.isEmpty()) {
+                        System.out.println("Nenhum professor cadastrado.");
+                    } else {
+                        System.out.println("\n=== PROFESSORES CADASTRADOS ===");
+
+                        for (Professor p : professores) {
+                            System.out.println("ID: " + p.getId());
+                            System.out.println("Nome: " + p.getNome());
+                            System.out.println("Formação: " + p.getFormacao());
+                            System.out.println("------------------------------");
+                        }
+                    }
                     break;
 
                 case 5:
