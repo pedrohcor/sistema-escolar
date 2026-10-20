@@ -1,26 +1,27 @@
+
 package sistemaescolar;
 
 import java.util.ArrayList;
 
 public class Professor {
-    
+
     private String id;
     private String nome;
     private String formacao;
     private ArrayList<Turma> turmas;
-    
+
     public Professor(String id, String nome, String formacao) {
         this.id = id;
         this.nome = nome;
         this.formacao = formacao;
         this.turmas = new ArrayList<>();
     }
-    
-    public String getId(){
+
+    public String getId() {
         return id;
     }
-    
-    public boolean setId(String id){
+
+    public boolean setId(String id) {
         if (id == null || id.trim().isEmpty()) {
             System.out.println("ID inválido!\n");
             return false;
@@ -28,12 +29,12 @@ public class Professor {
             this.id = id.trim();
             return true;
         }
-    }    
-    
-    public String getNome(){
+    }
+
+    public String getNome() {
         return nome;
     }
-    
+
     public boolean setNome(String nome) {
         if (nome == null || nome.trim().isEmpty()) {
             System.out.println("Nome inválido!\n");
@@ -44,12 +45,10 @@ public class Professor {
         }
     }
 
-
-    
-    public String getFormacao(){
+    public String getFormacao() {
         return formacao;
     }
-    
+
     public boolean setFormacao(String formacao) {
         if (formacao == null || formacao.trim().isEmpty()) {
             System.out.println("Formação inválida!\n");
@@ -60,7 +59,6 @@ public class Professor {
         }
     }
 
-    
     public ArrayList<Turma> getTurmas() {
         return turmas;
     }
@@ -71,5 +69,14 @@ public class Professor {
         } else {
             this.turmas = turmas;
         }
+    }
+
+    public boolean adicionarTurma(Turma turma) {
+        if (turma == null || turmas.contains(turma)) {
+            return false;
+        }
+
+        turmas.add(turma);
+        return true;
     }
 }
