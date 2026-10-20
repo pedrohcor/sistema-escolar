@@ -1,4 +1,3 @@
-
 package sistemaescolar;
 
 import java.util.ArrayList;
@@ -9,7 +8,7 @@ public class SistemaEscolar {
     public static void main(String[] args) {
 
         Scanner scanner = new Scanner(System.in);
-        int opcao;
+        int opcao = 0;
         ArrayList<Professor> professores = new ArrayList<>();
         ArrayList<Aluno> alunos = new ArrayList<>();
         ArrayList<Turma> turmas = new ArrayList<>();
@@ -30,8 +29,13 @@ public class SistemaEscolar {
             System.out.println();
             System.out.print("Escolha uma opção: ");
 
-            opcao = scanner.nextInt();
-            scanner.nextLine();
+            String entrada = scanner.nextLine();
+
+            try {
+                opcao = Integer.parseInt(entrada.trim());
+            } catch (NumberFormatException e) {
+                opcao = 0;
+            }
 
             switch (opcao) {
                 case 1:
@@ -44,14 +48,29 @@ public class SistemaEscolar {
                     System.out.print("Digite o CPF do aluno: ");
                     String cpf = scanner.nextLine();
 
+                    boolean matriculaExiste = false;
+
+                    for (Aluno a : alunos) {
+                        if (a.getMatricula() != null
+                                && a.getMatricula().equalsIgnoreCase(matricula.trim())) {
+                            matriculaExiste = true;
+                            break;
+                        }
+                    }
+
+                    if (matriculaExiste) {
+                        System.out.println("Erro: Matrícula já cadastrada!");
+                        break;
+                    }
+
                     Aluno aluno = new Aluno(nomeAluno, matricula, cpf);
 
                     if (aluno.setNome(nomeAluno)
                             && aluno.setMatricula(matricula)
                             && aluno.setCpf(cpf)) {
 
-                        System.out.println("Aluno cadastrado com sucesso!");
                         alunos.add(aluno);
+                        System.out.println("Aluno cadastrado com sucesso!");
 
                     } else {
                         System.out.println("Não foi possível cadastrar aluno.");
@@ -76,6 +95,21 @@ public class SistemaEscolar {
                 case 3:
                     System.out.print("Digite o ID do professor: ");
                     String id = scanner.nextLine();
+
+                    boolean idExiste = false;
+
+                    for (Professor p : professores) {
+                        if (p.getId() != null
+                                && p.getId().equalsIgnoreCase(id.trim())) {
+                            idExiste = true;
+                            break;
+                        }
+                    }
+
+                    if (idExiste) {
+                        System.out.println("Erro: ID do professor já cadastrado!");
+                        break;
+                    }
 
                     System.out.print("Digite o nome do professor: ");
                     String nome = scanner.nextLine();
@@ -121,8 +155,33 @@ public class SistemaEscolar {
                     System.out.print("Digite o código da turma: ");
                     String codTurma = scanner.nextLine();
 
+                    if (codTurma.trim().isEmpty()) {
+                        System.out.println("Erro: Código da turma inválido!");
+                        break;
+                    }
+
+                    boolean codigoExiste = false;
+
+                    for (Turma t : turmas) {
+                        if (t.getCodigo() != null
+                                && t.getCodigo().equalsIgnoreCase(codTurma.trim())) {
+                            codigoExiste = true;
+                            break;
+                        }
+                    }
+
+                    if (codigoExiste) {
+                        System.out.println("Erro: Código da turma já cadastrado!");
+                        break;
+                    }
+
                     System.out.print("Digite o nome da disciplina: ");
                     String disciplina = scanner.nextLine();
+
+                    if (disciplina.trim().isEmpty()) {
+                        System.out.println("Erro: Nome da disciplina inválido!");
+                        break;
+                    }
 
                     System.out.print("Digite o ID do professor responsável: ");
                     String idProf = scanner.nextLine();
@@ -130,7 +189,8 @@ public class SistemaEscolar {
                     Professor profResponsavel = null;
 
                     for (Professor p : professores) {
-                        if (p.getId() != null && p.getId().equals(idProf)) {
+                        if (p.getId() != null
+                                && p.getId().equalsIgnoreCase(idProf.trim())) {
                             profResponsavel = p;
                             break;
                         }
@@ -139,8 +199,15 @@ public class SistemaEscolar {
                     if (profResponsavel == null) {
                         System.out.println("Erro: Professor não encontrado! Cadastre o professor primeiro.");
                     } else {
-                        Turma novaTurma = new Turma(codTurma, disciplina, profResponsavel);
+                        Turma novaTurma = new Turma(
+                                codTurma.trim(),
+                                disciplina.trim(),
+                                profResponsavel
+                        );
+
                         turmas.add(novaTurma);
+                        profResponsavel.adicionarTurma(novaTurma);
+
                         System.out.println("Turma cadastrada com sucesso!");
                     }
                     break;
@@ -166,7 +233,7 @@ public class SistemaEscolar {
 
                     for (Turma t : turmas) {
                         if (t.getCodigo() != null
-                                && t.getCodigo().equalsIgnoreCase(buscaCodTurma)) {
+                                && t.getCodigo().equalsIgnoreCase(buscaCodTurma.trim())) {
                             turmaEncontrada = t;
                             break;
                         }
@@ -176,7 +243,7 @@ public class SistemaEscolar {
 
                     for (Aluno a : alunos) {
                         if (a.getMatricula() != null
-                                && a.getMatricula().equalsIgnoreCase(buscaMatricula)) {
+                                && a.getMatricula().equalsIgnoreCase(buscaMatricula.trim())) {
                             alunoEncontrado = a;
                             break;
                         }
@@ -224,14 +291,15 @@ public class SistemaEscolar {
 
                     for (Aluno a : alunos) {
                         if (a.getMatricula() != null
-                                && a.getMatricula().equalsIgnoreCase(matriculaConsulta)) {
+                                && a.getMatricula().equalsIgnoreCase(matriculaConsulta.trim())) {
                             alunoConsultado = a;
                             break;
                         }
                     }
 
                     if (alunoConsultado == null) {
-                        System.out.println("Erro: Aluno com matrícula '" + matriculaConsulta + "' não encontrado.");
+                        System.out.println("Erro: Aluno com matrícula '"
+                                + matriculaConsulta + "' não encontrado.");
                     } else {
                         System.out.println("\n=== DADOS DO ALUNO ===");
                         System.out.println("Nome: " + alunoConsultado.getNome());
@@ -272,4 +340,3 @@ public class SistemaEscolar {
         scanner.close();
     }
 }
-//Ficheiro Final
