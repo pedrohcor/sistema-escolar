@@ -1,52 +1,88 @@
-
 package sistemaescolar;
 
 import java.util.ArrayList;
 
 public class Turma {
+
     private String codigo;
     private String nomeDisciplina;
     private Professor professor;
-    private ArrayList<Aluno> aluno;
-    
-    public Turma(String codigo, String nomeDisciplina, Professor professor){
-        this.codigo = codigo;
-        this.nomeDisciplina = nomeDisciplina;
-        this.professor = professor;
-        this.aluno = new ArrayList<>();   
+    private ArrayList<Aluno> alunos;
+
+    public Turma(String codigo, String nomeDisciplina, Professor professor) {
+        setCodigo(codigo);
+        setNomeDisciplina(nomeDisciplina);
+        setProfessor(professor);
+        this.alunos = new ArrayList<>();
     }
-    
-    public String getCodigo(){
+
+    public String getCodigo() {
         return codigo;
     }
-    
-    public String getNomeDisciplina(){
+
+    public boolean setCodigo(String codigo) {
+        if (codigo == null || codigo.trim().isEmpty()) {
+            return false;
+        }
+        this.codigo = codigo.trim();
+        return true;
+    }
+
+    public String getNomeDisciplina() {
         return nomeDisciplina;
     }
-    
-    public Professor getProfessor(){
+
+    public boolean setNomeDisciplina(String nomeDisciplina) {
+        if (nomeDisciplina == null || nomeDisciplina.trim().isEmpty()) {
+            return false;
+        }
+        this.nomeDisciplina = nomeDisciplina.trim();
+        return true;
+    }
+
+    public Professor getProfessor() {
         return professor;
     }
-    
-    public ArrayList<Aluno> getAlunos(){
-        return aluno;
+
+    public boolean setProfessor(Professor professor) {
+        if (professor == null) {
+            return false;
+        }
+        this.professor = professor;
+        return true;
     }
-    public boolean contemAluno(String matricula){
+
+    public ArrayList<Aluno> getAlunos() {
+        return alunos;
+    }
+
+    public boolean setAlunos(ArrayList<Aluno> alunos) {
+        if (alunos == null) {
+            return false;
+        }
+        this.alunos = alunos;
+        return true;
+    }
+
+    public boolean contemAluno(String matricula) {
         if (matricula == null || matricula.trim().isEmpty()) {
             return false;
         }
 
-        for (Aluno a : aluno) {
-            if (a != null && a.getMatricula() != null) {
-                if (a.getMatricula().trim().equalsIgnoreCase(matricula.trim())) {
-                    return true;
+        for (Aluno a : alunos) {
+            if (a != null && a.getMatricula() != null
+                    && a.getMatricula().equalsIgnoreCase(matricula.trim())) {
+                return true;
             }
         }
+
+        return false;
     }
-    return false; 
-    }
-    public boolean matricularAluno(Aluno novoAluno){
-        if (novoAluno == null || novoAluno.getMatricula() == null || novoAluno.getMatricula().trim().isEmpty()) {
+
+    public boolean matricularAluno(Aluno novoAluno) {
+        if (novoAluno == null
+                || novoAluno.getMatricula() == null
+                || novoAluno.getMatricula().trim().isEmpty()) {
             return false;
         }
 
@@ -54,32 +90,33 @@ public class Turma {
             return false;
         }
 
-        aluno.add(novoAluno);
+        alunos.add(novoAluno);
         return true;
     }
+
     public String getDadosFormatados() {
-        String nomeProf = (professor != null && professor.getNome() != null && !professor.getNome().trim().isEmpty()) 
-                          ? professor.getNome() 
-                          : "Professor Inválido/Não Cadastrado";
+        String dados = "Código: " + (codigo != null ? codigo : "Não informado")
+                + "\nDisciplina: " + (nomeDisciplina != null ? nomeDisciplina : "Não informada");
 
-        String texto = "Código: " + codigo + " | Disciplina: " + nomeDisciplina + " | Professor: " + nomeProf + "\n";
-        texto += "Alunos Matriculados (" + aluno.size() + "):\n";
-
-        if (aluno.isEmpty()) {
-            texto += "  - Nenhum aluno matriculado nesta turma.\n";
+        if (professor != null && professor.getNome() != null) {
+            dados += "\nProfessor responsável: " + professor.getNome();
         } else {
-            for (Aluno a : aluno) {
+            dados += "\nProfessor responsável: Não informado";
+        }
+
+        dados += "\nAlunos matriculados:";
+
+        if (alunos == null || alunos.isEmpty()) {
+            dados += "\n  - Nenhum aluno matriculado";
+        } else {
+            for (Aluno a : alunos) {
                 if (a != null) {
-                    String nomeAluno = (a.getNome() != null && !a.getNome().trim().isEmpty()) 
-                                       ? a.getNome() 
-                                       : "Nome não informado";
-                                       
-                    texto += "  - [" + a.getMatricula() + "] " + nomeAluno + "\n";
+                    dados += "\n  - " + (a.getNome() != null ? a.getNome() : "Sem nome")
+                            + " (Matrícula: " + (a.getMatricula() != null ? a.getMatricula() : "Sem matrícula") + ")";
                 }
             }
         }
-        return texto;
-    
+
+        return dados;
     }
 }
-//Final Classe
